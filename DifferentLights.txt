@@ -1,0 +1,67 @@
+SPOTLIGHT
+
+
+
+I = intensity of light source
+ks = how colour of specular highlights might differ from colour of surface(e.g. colour of light after being reflected off a surface onto another)
+
+===——
+
+//vec3 lightPosition = vec3(10,10,10)
+vec3 lightPosition = vec3(10,0 * cos(100.0*time), 10.0*sin(100.0*time),10) //moving light  source
+void main {
+
+vec3 Ia = vec3(0.2,0.2,0.22)
+vec3 ka = 0.2*vec3(1,1,1)
+vec3 ambient = Ia*ka
+
+vec3 L = normalize(lightPosition, fPosition)
+vec3 spotDirection = normalize(vec3(0,0,0) - lightPosition)
+float dp = dot(-L, spotDirection)
+vec3 diffuse = vec3(0,0,0)
+if (dp>-10) {
+	vec3 I = 0.6*vec3(1,1,1) //light intensity(brightness)
+	vec3 kd = vec3(0,1,0)
+	vec3 N = normalize(fNormal)
+	vec3 diffuse = I*kd*dot(N,L)
+}
+
+gl_FragColor = vec4(ambient + diffuse, 1.0
+
+}
+
+
+-----------------------
+
+
+MOVING LIGHT
+
+I = intensity of light source
+ks = how colour of specular highlights might differ from colour of surface(e.g. colour of light after being reflected off a surface onto another)
+
+===——
+
+//vec3 lightPosition = vec3(10,10,10)
+vec3 lightPosition = vec3(10,0 * cos(100.0*time), 10.0*sin(100.0*time),10) //moving light 														source
+void main {
+
+vec3 Ia = vec3(1,1,1)
+vec3 ka = 0.2*vec3(1,1,1)
+vec3 ambient = Ia*ka
+float shininess = 10.0 //higher is less shiny
+
+vec3 I = vec3(1,1,0) //light intensity(brightness)
+vec3 kd = vec3(0,1,1)
+vec3 N = normalize(fNormal)
+vec3 L = normalize(lightPosition + fPosition)
+vec3 diffuse = I*kd*max(00,dot(N,L))
+
+vec3 ks = vec3(1,1,1)
+vec3 R = reflect(-L,N)) //Incident(opposite) direction of L(Light). Reflect reflects around the 					Normal
+vec3 V = normalize(vec3(0,0,0) - fPosition) //vec3(0,0,0) is eye point since in viewing 										coordns
+float rv = max(0.0,dot(R,V))
+float rvn = pow(rv, shininess)
+vec3 specular = I*ks*rvn
+
+}
+
